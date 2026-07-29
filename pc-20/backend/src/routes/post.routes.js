@@ -6,7 +6,8 @@ const upload = multer({ storage: multer.memoryStorage() });
 const identifyUser = require('../middlewares/auth.middleware');
 
 /**
- * POST /api/posts/ - [protected]
+ * @routes POST /api/posts/ - [protected]
+ * 
  * req.body = { caption }
  * req.file = { imgUrl }
  */
@@ -19,8 +20,8 @@ postRouter.post(
 );
 
 /**
- * GET /api/posts/ - [protected]
- * logged-in user ke saare posts fetch karo
+ * @routes GET /api/posts/ - [protected]
+ * @descrption logged-in user ke saare posts fetch karo
  */
 
 postRouter.get('/', identifyUser, postController.getPostController);
@@ -35,5 +36,18 @@ postRouter.get(
   identifyUser,
   postController.getPostDetailsController
 );
+
+
+/**
+ * @route POST /api/posts/like/:postid
+ * @description like a post with the id provided in the request params.
+ * @access Private
+ */
+postRouter.post(
+  "/like/:postId",
+  identifyUser,
+  postController.likePostController,
+);
+
 
 module.exports = postRouter;

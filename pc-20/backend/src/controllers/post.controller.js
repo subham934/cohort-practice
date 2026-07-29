@@ -1,7 +1,9 @@
 const postModel = require('../models/post.model');
 const ImageKit = require('@imagekit/nodejs');
 const { toFile } = require('@imagekit/nodejs');
-const jwt = require('jsonwebtoken');
+// const jwt = require('jsonwebtoken');
+const likeModel = require('../models/like.model');
+
 
 const imagekit = new ImageKit({
   privateKey: process.env.IMAGEKIT_PRIVATE_KEY,
@@ -30,7 +32,6 @@ async function createPostController(req, res) {
     message: 'Post created Successfully',
     post,
   });
-
 }
 
 // ─────────────────────────────────────
@@ -38,7 +39,6 @@ async function createPostController(req, res) {
 // ─────────────────────────────────────
 
 async function getPostController(req, res) {
-
   const userId = req.user.id;
 
   const posts = await postModel.find({
@@ -56,7 +56,6 @@ async function getPostController(req, res) {
 // ─────────────────────────────────────
 
 async function getPostDetailsController(req, res) {
-
   // LINE 1: middleware se userId nikalo
   const userId = req.user.id;
 
@@ -83,11 +82,45 @@ async function getPostDetailsController(req, res) {
     message: 'Post details fetched successfully.',
     post,
   });
-  
 }
 
+
+
+async function likePostController(req, res) {
+  const username = req.user.username;
+  const postId = req.params.postId;
+
+  const post = await postModel.findById(postId);
+  if (!post) {
+    return res.status(404).json({
+      message: 'Post not found...',
+    });
+  }
+
+  const isAlreadyLiked = await likeModel.findOne({
+    user: username,
+    post: postId,
+  });
+
+  if (isAlreadyLiked) {
+    return res.status(409).json({
+      message: 'Post already liked.',
+    });
+  }
+
+  const like = await likeModel.create({
+    user: username,
+    post: postId,
+  });
+
+  return res.status(201).json({
+    message: 'Post Liked Successfully',
+    like,
+  });
+}
 module.exports = {
   createPostController,
   getPostController,
   getPostDetailsController,
+  likePostController,
 };
