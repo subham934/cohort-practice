@@ -82,10 +82,9 @@ async function getAllfolloweeController(req, res) {
   const followingUsers = await followModel.find({
     follower: followerUsername,
   });
-  //Step 3 — extract all followee usernames , 
+  //Step 3 — extract all followee usernames ,
   //  .map() loops over each object and pulls out only the followee field.
   const followingUserNames = followingUsers.map((item) => item.followee);
-
 
   // Step 4 — Fetch full user data for those usernames
 
@@ -95,7 +94,6 @@ async function getAllfolloweeController(req, res) {
 
   // Step 4 mein hum userModel se un users ki complete details nikalte hain jinhe logged-in user follow karta hai. Step 3 mein hume sirf usernames ki ek array milti hai (jaise ["test_2", "test_3"]). Phir MongoDB ke $in operator ka use karke hum users collection mein har document ke username field ko check karte hain. Agar kisi document ka username is array ke kisi value se match karta hai, to MongoDB us user ka poora document (jaise fullname, email, profile picture, bio, etc.) return kar deta hai. Yaani $in ek filter ki tarah kaam karta hai jo array mein diye gaye usernames se matching users ko dhoondhkar unki complete information la deta hai.
 
-
   return res.status(201).json({
     success: true,
     message: 'List of all following users',
@@ -103,10 +101,8 @@ async function getAllfolloweeController(req, res) {
   });
 }
 
-
 async function acceptFollowController(req, res) {
-
-  // followee = jo accept/reject kar raha hai 
+  // followee = jo accept/reject kar raha hai
   const followeeUsername = req.user.username;
 
   // follower = jisne follow request bheja tha = URL se aayega
@@ -115,13 +111,13 @@ async function acceptFollowController(req, res) {
   // DB mein us record ko dhundo aur status update karo
   const followRecord = await followModel.findOneAndUpdate(
     { follower: followerUsername, followee: followeeUsername },
-    { status: "accepted" },
-    { new: true }  // updated document return karo
+    { status: 'accepted' },
+    { new: true } // updated document return karo
   );
 
   if (!followRecord) {
     return res.status(404).json({
-      message: "Follow request not found!",
+      message: 'Follow request not found!',
     });
   }
 
@@ -137,13 +133,13 @@ async function rejectFollowController(req, res) {
 
   const followRecord = await followModel.findOneAndUpdate(
     { follower: followerUsername, followee: followeeUsername },
-    { status: "rejected" },
+    { status: 'rejected' },
     { new: true }
   );
 
   if (!followRecord) {
     return res.status(404).json({
-      message: "Follow request not found!",
+      message: 'Follow request not found!',
     });
   }
 
@@ -152,7 +148,6 @@ async function rejectFollowController(req, res) {
     follow: followRecord,
   });
 }
-
 
 module.exports = {
   followUserController,
