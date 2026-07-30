@@ -86,7 +86,7 @@ async function loginController(req, res) {
   });
 
   if (!user) {
-    return res.status(409).json({
+    return res.status(404).json({
       message: 'user not found!!!',
     });
   }
