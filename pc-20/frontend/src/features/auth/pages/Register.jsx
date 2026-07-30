@@ -39,30 +39,34 @@ const Register = () => {
           <h1>Register</h1>
 
           <form onSubmit={handleSubmit}>
+            
             <input
               type="text"
               name="username"
-              placeholder="Enter User Name"
+              placeholder="Enter Username"
               value={username}
               onInput={(e)=>setUsername(e.target.value)}
               required
             />
+            
             <input
               type="email"
               name="email"
+              placeholder="Enter Email"
               value={email}
               onInput={(e)=>setEmail(e.target.value)}
-              placeholder="Enter Email"
               required
             />
+            
             <input
               type="password"
               name="password"
+              placeholder="Enter Password"
               value={password}
               onInput={(e)=>setPassword(e.target.value)}
-              placeholder="Enter Password"
               required
             />
+            
             <button>Register</button>
           </form>
           <p>Already have an account ? <Link className='togglAuthform' to="/login">Login</Link></p>

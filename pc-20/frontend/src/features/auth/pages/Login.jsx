@@ -9,23 +9,7 @@ const Login = () => {
 
   async function handleSubmit(e) {
     e.preventDefault();
-    axios
-      .post(
-        'http://localhost:3000/api/auth/login',
-        {
-          username,
-          password,
-        },
-        {
-          withCredentials: true,
-        }
-      )
-      .then((response) => {
-        console.log(response.data);
-      })
-      .catch((error) => {
-        console.log(error);
-      });
+
     setUsername('');
     setPassword('');
   }
