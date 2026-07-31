@@ -54,7 +54,7 @@ const Login = () => {
               <button>Login</button>
             </form>
             <p>
-              Don't have an account?{' '}
+              Don't have an account?
               <Link className="togglAuthform" to="/register">
                 Register
               </Link>
